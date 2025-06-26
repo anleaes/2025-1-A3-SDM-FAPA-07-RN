@@ -1,7 +1,11 @@
 {
   "dependencies": {
+    "@expo/vector-icons": "^14.1.0",
     "@react-navigation/drawer": "^7.5.2",
     "@react-navigation/native": "^7.1.14",
     "react-native-vector-icons": "^10.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
   }
 }
