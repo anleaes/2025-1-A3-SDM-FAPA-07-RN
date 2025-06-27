@@ -1,17 +1,21 @@
+import TipoDeServicosScreen from '@/screens/TipoDeServicosScreen';
 import { Ionicons } from '@expo/vector-icons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
 import CustomDrawerContent from '../components/CustomDrawerContent';
-import TipoDeServicoScreen, { TipoDeServico } from '../screens/TipoDeServicoScreen';
 import CreateTipoDeServicoScreen from '../screens/CreateTipoDeServicoScreen';
 import EditTipoDeServicoScreen from '../screens/EditTipoDeServicoScreen';
 import HomeScreen from '../screens/HomeScreen';
+import { TipoDeServico } from '../screens/TipoDeServicosScreen';
+
 
 export type DrawerParamList = {
   Home: undefined;
-  TipoDeServico: undefined;
+  TipoDeServicos: undefined;
   CreateTipoDeServico: undefined;
-  EditTipoDeServico: { tipo: TipoDeServico };
+  EditTipoDeServico: { tipoDeServico: TipoDeServico };
+  Products: undefined;
+  Socialnetworks: undefined;  
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -33,16 +37,16 @@ const DrawerNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          drawerIcon: ({ color, size }) => <Ionicons name="home-outline" size={size} color={color} />,
+          drawerIcon: ({ color, size }) => <Ionicons name="home-outline" size={size} color={color}  />,
           title: 'Início',
         }}
       />
       <Drawer.Screen
-        name="TipoDeServico"
-        component={TipoDeServicoScreen}
+        name="TipoDeServicos"
+        component={TipoDeServicosScreen}
         options={{
           drawerIcon: ({ color, size }) => <Ionicons name="settings-outline" size={size} color={color} />,
-          title: 'Tipos de Serviço',
+          title: 'Tipo de Serviços',
         }}
       />
       <Drawer.Screen
@@ -55,7 +59,7 @@ const DrawerNavigator = () => {
         component={EditTipoDeServicoScreen}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar tipo de serviço' }}
       />
-    </Drawer.Navigator>
+    </Drawer.Navigator>  
   );
 };
 
