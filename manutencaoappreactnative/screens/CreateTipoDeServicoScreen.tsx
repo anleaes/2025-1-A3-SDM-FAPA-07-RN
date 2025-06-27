@@ -1,5 +1,5 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { DrawerParamList } from '../navigation/DrawerNavigator';
@@ -7,84 +7,89 @@ import { DrawerParamList } from '../navigation/DrawerNavigator';
 type Props = DrawerScreenProps<DrawerParamList, 'CreateTipoDeServico'>;
 
 const CreateTipoDeServicoScreen = ({ navigation }: Props) => {
-  const [nome, setNome] = useState('');
-  const [descricao, setDescricao] = useState('');
-  const [salvando, setSalvando] = useState(false);
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useFocusEffect(
     useCallback(() => {
-      setNome('');
-      setDescricao('');
+      setName('');
+      setDescription('');
     }, [])
   );
 
-  const handleSalvar = async () => {
-    setSalvando(true);
+  const handleSave = async () => {
+    setSaving(true);
+    setError(null);
     try {
-      await fetch('http://127.0.0.1:8000/tipoDeServico/', {
+      const res = await fetch('http://localhost:8000/tipoDeServico/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome, descricao }),
+        body: JSON.stringify({ nome: name, descricao: description }),
       });
-      navigation.navigate('TipoDeServico');
-    } catch (error) {
-      console.error('Erro ao salvar tipo de serviço:', error);
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || 'Erro ao criar tipo de serviço');
+      }
+      navigation.navigate('TipoDeServicos');
+    } catch (e: any) {
+      setError(e.message || 'Erro desconhecido');
     } finally {
-      setSalvando(false);
+      setSaving(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Novo Tipo de Serviço</Text>
-
+      <Text style={styles.title}>Nova categoria</Text>
       <Text style={styles.label}>Nome</Text>
       <TextInput
-        value={nome}
-        onChangeText={setNome}
+        value={name}
+        onChangeText={setName}
         style={styles.input}
       />
-
       <Text style={styles.label}>Descrição</Text>
       <TextInput
-        value={descricao}
-        onChangeText={setDescricao}
+        value={description}
+        onChangeText={setDescription}
         style={[styles.input, { height: 100 }]}
         multiline
       />
-
-      {salvando
+      {error && (
+        <Text style={{ color: 'red', marginVertical: 8 }}>{error}</Text>
+      )}
+      {saving
         ? <ActivityIndicator size="large" color="#4B7BE5" />
-        : <Button title="Salvar" onPress={handleSalvar} color="#4B7BE5" />
+        : <Button title="Salvar" onPress={handleSave} color="#4B7BE5" />
       }
-
-      <Button title="Voltar" onPress={() => navigation.navigate('TipoDeServico')} />
+      <Button title="Voltar" onPress={() => navigation.navigate('TipoDeServicos')} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#fff'
+  container: { 
+    flex: 1, 
+    padding: 16, 
+    backgroundColor: '#fff' 
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    alignSelf: 'center'
-  },
-  label: {
-    fontWeight: '600',
-    marginTop: 12,
-    marginBottom: 4
+  title: { 
+    fontSize: 20, 
+    fontWeight: 'bold', 
+    marginBottom: 12, 
+    alignSelf: 'center' },
+  label: { 
+    fontWeight: '600', 
+    marginTop: 12, 
+    marginBottom: 4 
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
-    padding: 10
+    padding: 10,
   },
 });
 

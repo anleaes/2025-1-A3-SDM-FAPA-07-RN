@@ -2,17 +2,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { useFocusEffect } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { DrawerParamList } from '../navigation/DrawerNavigator';
 
-type Props = DrawerScreenProps<DrawerParamList, 'TipoDeServico'>;
+type Props = DrawerScreenProps<DrawerParamList, 'TipoDeServicos'>;
 
 export type TipoDeServico = {
   id: number;
@@ -20,71 +13,78 @@ export type TipoDeServico = {
   description: string;
 };
 
-const TipoDeServicoScreen = ({ navigation }: Props) => {
-  const [tipos, setTipos] = useState<TipoDeServico[]>([]);
+const TipoDeServicosScreen = ({ navigation }: Props) => {
+
+  const [tipoDeServicos, setTipoDeServicos] = useState<TipoDeServico[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchTipos = async () => {
+  const fetchTipoDeServicos = async () => {
     setLoading(true);
     const response = await fetch('http://localhost:8000/tipoDeServico/');
     const data = await response.json();
-    setTipos(data);
+    // Mapeia os campos do backend para os nomes esperados no frontend
+    const mapped = data.map((item: any) => ({
+      id: item.id,
+      name: item.nome,
+      description: item.descricao,
+    }));
+    setTipoDeServicos(mapped);
     setLoading(false);
   };
 
   useFocusEffect(
     useCallback(() => {
-      fetchTipos();
+      fetchTipoDeServicos();
     }, [])
   );
 
   const handleDelete = async (id: number) => {
-    await fetch(`http://localhost:8000/tipoDeServico/${id}/`, {
+    const res = await fetch(`http://localhost:8000/tipoDeServico/${id}/`, {
       method: 'DELETE',
     });
-    setTipos((prev) => prev.filter((t) => t.id !== id));
+    setTipoDeServicos(prev => prev.filter(c => c.id !== id));
   };
 
   const renderItem = ({ item }: { item: TipoDeServico }) => (
     <View style={styles.card}>
-      <Text style={styles.name}>{item.name}</Text>
+      <Text style={{ fontWeight: 'bold', color: '#4B7BE5', marginBottom: 4 }}>
+        ID: {item.id} | Nome: {item.name}
+      </Text>
       <Text style={styles.description}>{item.description}</Text>
-      <View style={styles.row}>
-        <TouchableOpacity
-          style={styles.editButton}
-          onPress={() => navigation.navigate('EditTipoDeServico', { tipo: item })}
-        >
-          <Text style={styles.editText}>Editar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.deleteButton}
-          onPress={() => handleDelete(item.id)}
-        >
-          <Text style={styles.editText}>Excluir</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.editButton}
+        onPress={() => navigation.navigate('EditTipoDeServico', { tipoDeServico: item })}
+      >
+        <Text style={styles.editText}>Editar</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={() => handleDelete(item.id)}
+      >
+        <Text style={styles.editText}>Excluir</Text>
+      </TouchableOpacity>
     </View>
   );
 
-  return (
+  return ( 
     <View style={styles.container}>
-      <Text style={styles.title}>Tipos de Serviço</Text>
+      <Text style={styles.title}>Tipos de serviços</Text>
       {loading ? (
         <ActivityIndicator size="large" color="#4B7BE5" />
       ) : (
         <FlatList
-          data={tipos}
+          data={tipoDeServicos}
           keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
           contentContainerStyle={{ paddingBottom: 20 }}
         />
       )}
       <TouchableOpacity
-        style={styles.fab}
-        onPress={() => navigation.navigate('CreateTipoDeServico')}
-      >
-        <Ionicons name="add" size={28} color="#fff" />
-      </TouchableOpacity>
+      style={styles.fab}
+      onPress={() => navigation.navigate('CreateTipoDeServico')}
+    >
+      <Ionicons name="add" size={28} color="#fff"  />
+    </TouchableOpacity>
     </View>
   );
 };
@@ -130,19 +130,9 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginRight: 8,
   },
-  deleteButton: {
-    backgroundColor: '#E54848',
-    padding: 8,
-    borderRadius: 6,
-  },
-  editText: {
-    color: '#fff',
-    fontWeight: '500',
-  },
-  row: {
-    flexDirection: 'row',
-    marginTop: 8,
-    alignSelf: 'flex-end',
+  editText: { 
+    color: '#fff', 
+    fontWeight: '500' 
   },
   fab: {
     position: 'absolute',
@@ -153,6 +143,17 @@ const styles = StyleSheet.create({
     padding: 14,
     elevation: 4,
   },
+  deleteButton: {
+    backgroundColor: '#E54848',
+    padding: 8,
+    borderRadius: 6,
+    marginRight: 8,
+  },
+  row: { 
+    flexDirection: 'row', 
+    marginTop: 8, 
+    alignSelf: 'flex-end' 
+  },
 });
 
-export default TipoDeServicoScreen;
+export default TipoDeServicosScreen;

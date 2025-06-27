@@ -1,11 +1,15 @@
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 const CustomDrawerContent = (props: any) => {
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
       <View style={styles.header}>
+        <Image
+          source={require('../assets/images/gato.png')}
+          style={styles.avatar}
+        />
         <Text style={styles.name}>Olá, Usuário!</Text>
       </View>
       <View style={{ flex: 1, paddingTop: 10 }}>
@@ -20,6 +24,14 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#4B7BE5',
     alignItems: 'center',
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: '#fff',
   },
   name: {
     color: '#fff',
