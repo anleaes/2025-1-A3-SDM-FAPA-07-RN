@@ -3,9 +3,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React from 'react';
 import CustomDrawerContent from '../components/CustomDrawerContent';
+import CreateServicoScreen from '../screens/CreateServicoScreen';
 import CreateTipoDeServicoScreen from '../screens/CreateTipoDeServicoScreen';
 import EditTipoDeServicoScreen from '../screens/EditTipoDeServicoScreen';
 import HomeScreen from '../screens/HomeScreen';
+import ServicoScreen from '../screens/ServicoScreen';
 import { TipoDeServico } from '../screens/TipoDeServicosScreen';
 
 
@@ -15,7 +17,13 @@ export type DrawerParamList = {
   CreateTipoDeServico: undefined;
   EditTipoDeServico: { tipoDeServico: TipoDeServico };
   Products: undefined;
-  Socialnetworks: undefined;  
+  Socialnetworks: undefined;
+  Servicos: undefined;
+  EditServico: { servico: any };
+  CreateServico: undefined; // Adicionado para suportar a tela CreateServico
+  Tecnicos: undefined;
+  CreateTecnico: undefined;
+  EditTecnico: { tecnico: any };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -58,6 +66,24 @@ const DrawerNavigator = () => {
         name="EditTipoDeServico"
         component={EditTipoDeServicoScreen}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar tipo de serviço' }}
+      />
+      <Drawer.Screen
+        name="Servicos"
+        component={ServicoScreen}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="construct-outline" size={size} color={color} />,
+          title: 'Serviços',
+        }}
+      />
+      <Drawer.Screen
+        name="EditServico"
+        component={require('../screens/EditServicoScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar serviço' }}
+      />
+      <Drawer.Screen
+        name="CreateServico"
+        component={CreateServicoScreen}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Novo serviço' }}
       />
     </Drawer.Navigator>  
   );
