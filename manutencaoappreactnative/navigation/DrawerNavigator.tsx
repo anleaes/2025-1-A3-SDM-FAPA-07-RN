@@ -33,6 +33,9 @@ export type DrawerParamList = {
   OrdemServicos: undefined;
   CreateOrdemServico: undefined;
   EditOrdemServico: { ordem: any };
+  OrdemServicoItens: undefined;
+  CreateOrdemServicoItem: undefined;
+  EditOrdemServicoItem: { item: any };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -165,6 +168,24 @@ const DrawerNavigator = () => {
         name="EditOrdemServico"
         component={require('../screens/EditOrdemServicoScreen').default}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar ordem de serviço' }}
+      />
+      <Drawer.Screen
+        name="OrdemServicoItens"
+        component={require('../screens/OrdemServicoItemScreen').default}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="list-outline" size={size} color={color} />, // ícone sugestivo
+          title: 'Itens da Ordem de Serviço',
+        }}
+      />
+      <Drawer.Screen
+        name="CreateOrdemServicoItem"
+        component={require('../screens/CreateOrdemServicoItemScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Novo item da ordem de serviço' }}
+      />
+      <Drawer.Screen
+        name="EditOrdemServicoItem"
+        component={require('../screens/EditOrdemServicoItemScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar item da ordem de serviço' }}
       />
     </Drawer.Navigator>  
   );
