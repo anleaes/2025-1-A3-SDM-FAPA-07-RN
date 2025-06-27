@@ -85,6 +85,24 @@ const DrawerNavigator = () => {
         component={CreateServicoScreen}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Novo serviço' }}
       />
+      <Drawer.Screen
+        name="Tecnicos"
+        component={require('../screens/TecnicoScreen').default}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="people-outline" size={size} color={color} />, // ou outro ícone
+          title: 'Técnicos',
+        }}
+      />
+      <Drawer.Screen
+        name="CreateTecnico"
+        component={require('../screens/CreateTecnicoScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Novo técnico' }}
+      />
+      <Drawer.Screen
+        name="EditTecnico"
+        component={require('../screens/EditTecnicoScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar técnico' }}
+      />
     </Drawer.Navigator>  
   );
 };
