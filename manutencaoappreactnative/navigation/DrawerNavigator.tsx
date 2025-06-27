@@ -24,6 +24,9 @@ export type DrawerParamList = {
   Tecnicos: undefined;
   CreateTecnico: undefined;
   EditTecnico: { tecnico: any };
+  Clientes: undefined;
+  CreateCliente: undefined;
+  EditCliente: { cliente: any };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -102,6 +105,24 @@ const DrawerNavigator = () => {
         name="EditTecnico"
         component={require('../screens/EditTecnicoScreen').default}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar técnico' }}
+      />
+      <Drawer.Screen
+        name="Clientes"
+        component={require('../screens/ClienteScreen').default}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="person-outline" size={size} color={color} />, // ou outro ícone
+          title: 'Clientes',
+        }}
+      />
+      <Drawer.Screen
+        name="CreateCliente"
+        component={require('../screens/CreateClienteScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Novo cliente' }}
+      />
+      <Drawer.Screen
+        name="EditCliente"
+        component={require('../screens/EditClienteScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar cliente' }}
       />
     </Drawer.Navigator>  
   );
