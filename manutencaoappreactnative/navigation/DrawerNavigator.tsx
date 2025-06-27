@@ -27,6 +27,9 @@ export type DrawerParamList = {
   Clientes: undefined;
   CreateCliente: undefined;
   EditCliente: { cliente: any };
+  Enderecos: undefined;
+  CreateEndereco: undefined;
+  EditEndereco: { endereco: any };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -123,6 +126,24 @@ const DrawerNavigator = () => {
         name="EditCliente"
         component={require('../screens/EditClienteScreen').default}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar cliente' }}
+      />
+      <Drawer.Screen
+        name="Enderecos"
+        component={require('../screens/EnderecoScreen').default}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="location-outline" size={size} color={color} />, // ou outro ícone
+          title: 'Endereços',
+        }}
+      />
+      <Drawer.Screen
+        name="CreateEndereco"
+        component={require('../screens/CreateEnderecoScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Novo endereço' }}
+      />
+      <Drawer.Screen
+        name="EditEndereco"
+        component={require('../screens/EditEnderecoScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar endereço' }}
       />
     </Drawer.Navigator>  
   );
