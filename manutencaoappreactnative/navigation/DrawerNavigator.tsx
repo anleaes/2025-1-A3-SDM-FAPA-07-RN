@@ -36,6 +36,9 @@ export type DrawerParamList = {
   OrdemServicoItens: undefined;
   CreateOrdemServicoItem: undefined;
   EditOrdemServicoItem: { item: any };
+  Equipamentos: undefined;
+  CreateEquipamento: undefined;
+  EditEquipamento: { equipamento: any };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -186,6 +189,24 @@ const DrawerNavigator = () => {
         name="EditOrdemServicoItem"
         component={require('../screens/EditOrdemServicoItemScreen').default}
         options={{ drawerItemStyle: { display: 'none' }, title: 'Editar item da ordem de serviço' }}
+      />
+      <Drawer.Screen
+        name="Equipamentos"
+        component={require('../screens/EquipamentoScreen').default}
+        options={{
+          drawerIcon: ({ color, size }) => <Ionicons name="hardware-chip-outline" size={size} color={color} />, // ícone sugestivo
+          title: 'Equipamentos',
+        }}
+      />
+      <Drawer.Screen
+        name="CreateEquipamento"
+        component={require('../screens/CreateEquipamentoScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Novo equipamento' }}
+      />
+      <Drawer.Screen
+        name="EditEquipamento"
+        component={require('../screens/EditEquipamentoScreen').default}
+        options={{ drawerItemStyle: { display: 'none' }, title: 'Editar equipamento' }}
       />
     </Drawer.Navigator>  
   );
